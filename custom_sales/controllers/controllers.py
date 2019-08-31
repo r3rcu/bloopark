@@ -58,4 +58,27 @@ class CustomSales(CustomerPortal):
             history = request.session.get('my_orders_history', [])
         values.update(get_records_pager(history, order_sudo))
 
+        request.session['rm-orderline'] = list()
+        request.session['ed-orderline'] = list()
+
         return request.render('custom_sales.custom_sale_order_portal_template', values)
+
+    @http.route(['/addOLtoRM/'], methods=['POST'], auth='user')
+    def add_ol_to_rm(self, **params):
+        request.session['rm-orderline'].append(params.get('olId'))
+
+    @http.route(['/addOLtoED/'], methods=['POST'], auth='user')
+    def add_ol_to_ed(self, **params):
+        tmp = {'old-ol': params.get('oldId'), 'new-ol': params.get('newId')}
+        request.session['ed-orderline'].append(tmp)
+
+    @http.route(['/acepted-edit/'], methods=['POST'], auth='user')
+    def acept_edit(self, **params):
+        """
+        Rido, esta funcion es la que se va a ejecutar cuando aceptes guardar los cambios, fijate que no paso
+        ningun parametro pq lo cambiado debera estar en session, en las listas rm-orderline y ed-orderline,
+        esta funcion deberia devolver un valor Booleano, para saber si se ejecuto todo bien.
+        :param params:
+        :return:
+        """
+        return {'success': True}
