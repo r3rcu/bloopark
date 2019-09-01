@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-	<template id="custom_sales_assets" name="Custom Sales Assets" inherit_id="web.assets_frontend">
-
-		<xpath expr="//script[last()]" position="after">
+	<template id="assets_frontend" inherit_id="web.assets_frontend" name="Custom Sales Assets">
+		<xpath expr="." position="inside">
 			<script type="text/javascript" src="/custom_sales/static/js/scripts.js"></script>
 		</xpath>
-
     </template>
 
 </odoo>
