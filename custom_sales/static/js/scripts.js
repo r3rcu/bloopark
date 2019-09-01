@@ -1,11 +1,11 @@
+function showModalRemoveOrder(id, name) {
+    $("#order_name").html(name);
+    $("#order_line_id").val(id);
+    $("#modalRemoveOrder").modal();
+}
 
 $(document).ready(function() {
-
-    function showModalRemoveOrder(id, name) {
-        $("#order_name").html(name);
-        $("#order_line_id").val(id);
-        $("#modalRemoveOrder").modal();
-    }
+    alert("hola");
 
     $("#accept-delete").click(function () {
         var olId = $("#order_line_id").val();
