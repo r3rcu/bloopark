@@ -335,6 +335,7 @@
                         <t t-set="current_subtotal" t-value="0"/>
 
                         <t t-foreach="sale_order.order_line" t-as="line">
+                            <input type="hidden" id="order-line" t-att-value="line.id"/>
 
                             <t t-set="current_subtotal" t-value="current_subtotal + line.price_subtotal" groups="account.group_show_line_subtotals_tax_excluded"/>
                             <t t-set="current_subtotal" t-value="current_subtotal + line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
@@ -372,10 +373,10 @@
                                         <span t-field="line.price_total" groups="account.group_show_line_subtotals_tax_included"/>
                                     </td>
                                     <td class="text-right">
-                                        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalEditOrder">
+                                        <button type="button" class="btn btn-secondary" t-attf-onclick="showModalEditOrder({{line.id}})">
                                             <i class="fa fa-exchange"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger" t-attf-onclick="showModalRemoveOrder({{line.id}}, '{{line.name}}')">
+                                        <button type="button" class="btn btn-danger" t-attf-onclick="showModalRemoveOrder({{line.id}})">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </td>
@@ -473,6 +474,8 @@
             </section>
         </div>
 
+        <input type="hidden" id="orderline-active"/>
+
         <!-- Modal -->
         <div class="modal fade" id="modalRemoveOrder" tabindex="-1" role="dialog"
              aria-labelledby="modalRemoveTitle" aria-hidden="true">
@@ -534,7 +537,7 @@
             <tbody>
                 <t t-foreach="products" t-as="product">
                     <tr>
-                        <td><t t-esc="product.name"/></td>
+                        <td><span t-attf-id="name-of-{{product.id}}"><t t-esc="product.name"/></span></td>
                         <td>$<span t-attf-id="price-of-{{product.id}}"><t t-esc="product.list_price"/></span>
                         </td>
                         <td>

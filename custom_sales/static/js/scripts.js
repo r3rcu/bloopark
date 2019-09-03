@@ -35,16 +35,26 @@ $(document).ready(function() {
     
     $("#change-product").click(function () {
         var productId = $("div#products input[name='products']:checked").val();
+        var quantity = $("#quantity-of-"+productId).val();
+        var name = $("#name-of-"+productId).html();
+        var price = $("#price-of-"+productId).html().replace(',', '');
+        var oldol = $("#orderline-active").val();
         $("#modalEditOrder").modal('hide');
-        console.log(productId);
+        acceptChange(oldol, productId, quantity, name, price);
     })
 
 });
 
-function showModalRemoveOrder(id, name) {
+function showModalRemoveOrder(id) {
+    var name = $("tr#order-"+ id +" > td#product_name > span").html();
     $("#order_name").html(name);
     $("#order_line_id").val(id);
     $("#modalRemoveOrder").modal('show');
+}
+
+function showModalEditOrder(id) {
+    $("#orderline-active").val(id);
+    $("#modalEditOrder").modal('show');
 }
 
 function acceptDelete(){
@@ -59,6 +69,28 @@ function acceptDelete(){
             var total = parseFloat($("span[data-id='total_amount'] .oe_currency_value").html().replace(',', ''));
             var amount = parseFloat($("tr#order-" + olId +" span[data-oe-field='price_subtotal'] > span.oe_currency_value").html().replace(',', ''));
             $("span[data-id='total_amount'] .oe_currency_value").html(total - amount);
+        }, function () {
+            // an error occured during during call
+        });
+    });
+
+}
+
+function acceptChange(oldOL, newPId, quantity, name, price){
+
+    odoo.define('custom_sales.AcceptDelete', function(require) {
+        'use strict';
+        var ajax = require('web.ajax');
+        ajax.jsonRpc("/addOLtoED", 'call', {'oldol':oldOL, 'quantity': quantity, 'pid': newPId}).then(function(data) {
+            $("#modalEditOrder").modal('hide');
+            var oldamount = parseFloat($("tr#order-"+oldOL+" > td > div[data-oe-expression='line.price_unit'] > span.oe_currency_value").html());
+            var newamount = parseFloat(price)*parseFloat(quantity);
+            var total = parseFloat($("span[data-id='total_amount'] .oe_currency_value").html().replace(',', ''));
+            $("tr#order-"+oldOL+" > td#product_name > span").html(name);
+            $("tr#order-"+oldOL+" > td > div > span[data-oe-expression='line.product_uom_qty']").html(quantity);
+            $("tr#order-"+oldOL+" > td > div[data-oe-expression='line.price_unit'] > span.oe_currency_value").html(price);
+            $("tr#order-"+oldOL+" > td > span[data-oe-expression='line.price_subtotal'] > span.oe_currency_value").html(newamount);
+            $("span[data-id='total_amount'] .oe_currency_value").html(total - oldamount + newamount);
         }, function () {
             // an error occured during during call
         });

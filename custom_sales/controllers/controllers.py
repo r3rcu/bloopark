@@ -76,10 +76,15 @@ class CustomSales(CustomerPortal):
         request.session['rm-orderline'] = tmp
         return {'success': True}
 
-    @http.route(['/addOLtoED'], methods=['POST'], auth='user')
+    @http.route(['/addOLtoED'], methods=['POST'], auth='user', type='json')
     def add_ol_to_ed(self, **params):
-        tmp = {'old-product': params.get('oldId'), 'new-product': {'quantity': params.get('quantity'), 'id': params.get('newId')}}
+
+        tmp = [value for value in request.session.get('rm-orderline')]
+        tmp2 = {'orderline': params.get('oldol'), 'new-product': {'quantity': params.get('quantity'), 'pid': params.get('pid')}}
+        tmp.append(tmp2)
         request.session['ed-orderline'].append(tmp)
+
+        return {'success': True}
 
     @http.route(['/acepted-edit'], methods=['POST'], auth='user')
     def accept_edit(self, **params):
