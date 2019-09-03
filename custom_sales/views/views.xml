@@ -3,7 +3,7 @@
     <!-- Complete page of the sale_order -->
     <template id="custom_sale_order_portal_content" inherit_id="sale.sale_order_portal_content">
         <xpath expr="//div[@id='introduction']" position="after">
-            <a t-attf-href="/my/orders/{{sale_order.id}}/edit?access_token={{token}}" class="btn btn-secondary float-right" role="button" aria-pressed="true" style="margin: 20px">Edit Order</a>
+            <a t-attf-href="/my/orders/{{sale_order.id}}/edit?access_token={{token}}" class="btn btn-secondary float-right" role="button" aria-pressed="true" style="margin: 20px">Exchange Process</a>
         </xpath>
     </template>
 

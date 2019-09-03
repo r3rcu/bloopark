@@ -252,7 +252,7 @@
         </div>
 
         <a id="no-changes" t-attf-href="/my/orders/{{sale_order.id}}?access_token={{token}}" class="btn btn-danger float-right" role="button" aria-pressed="true" style="margin: 20px"><i class="fa fa-close mr8"></i>Cancel</a>
-        <a id="save-changes" class="btn btn-secondary float-right" role="button" aria-pressed="true" style="margin: 20px; cursor: pointer;color: #FFFFFF"><i class="fa fa-save mr8"></i>Save</a>
+        <a id="save-changes" class="btn btn-secondary float-right" role="button" aria-pressed="true" style="margin: 20px; cursor: pointer;color: #FFFFFF"><i class="fa fa-save mr8"></i>Apply</a>
 
         <div t-attf-class="#{'card-body' if report_type == 'html' else ''}">
             <!-- Informations -->
