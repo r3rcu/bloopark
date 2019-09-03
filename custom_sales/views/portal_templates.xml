@@ -252,7 +252,7 @@
         </div>
 
         <a id="no-changes" t-attf-href="/my/orders/{{sale_order.id}}?access_token={{token}}" class="btn btn-danger float-right" role="button" aria-pressed="true" style="margin: 20px"><i class="fa fa-close mr8"></i>Cancel</a>
-        <a id="save-changes" class="btn btn-secondary float-right" role="button" aria-pressed="true" style="margin: 20px; cursor: pointer;"><i class="fa fa-save mr8"></i>Save</a>
+        <a id="save-changes" class="btn btn-secondary float-right" role="button" aria-pressed="true" style="margin: 20px; cursor: pointer;color: #FFFFFF"><i class="fa fa-save mr8"></i>Save</a>
 
         <div t-attf-class="#{'card-body' if report_type == 'html' else ''}">
             <!-- Informations -->
@@ -490,7 +490,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary accept-delete">Delete</button>
+                        <button type="button" class="btn btn-primary accept-delete" onclick="acceptDelete()">Delete</button>
                     </div>
                 </div>
             </div>
@@ -508,16 +508,45 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        Select which order line would you line to change ?
+                        <input id="input-products" type="text" class="form-control" placeholder="Product's Name"/>
+                        <div id="products"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Change</button>
+                        <button id="change-product" type="button" class="btn btn-primary">Change</button>
                     </div>
                 </div>
             </div>
         </div>
 
+    </template>
+
+    <template id="my_sale_order_portal_products">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Unit Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="products" t-as="product">
+                    <tr>
+                        <td><t t-esc="product.name"/></td>
+                        <td>$<span t-attf-id="price-of-{{product.id}}"><t t-esc="product.list_price"/></span>
+                        </td>
+                        <td>
+                            <input t-attf-id="quantity-of-{{product.id}}" type="number" value="1" min="1" name="quantity" style="max-width: 60px"/>
+                        </td>
+                        <td>
+                            <input type="radio" t-att-value="product.id" name="products"/>
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
     </template>
 
 </odoo>
